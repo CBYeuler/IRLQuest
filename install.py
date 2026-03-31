@@ -35,7 +35,7 @@ def install_dependencies():
     check_names = {
         "matplotlib": "matplotlib",
         "numpy": "numpy",
-        "simple-term-menu": "simple_term_menu"
+        "questionary": "questionary"
     }
 
     for package, import_name in check_names.items():
