@@ -119,50 +119,64 @@ def get_desktop_path():
 def create_shortcut_windows(exe_path):
     print("\n[4/4] Creating desktop shortcut...")
     desktop = get_desktop_path()
-    shortcut_path = os.path.join(desktop, f"{APP_NAME}.lnk")
+    main_py = os.path.join(SCRIPT_DIR, "main.py")
 
-    if os.path.exists(shortcut_path):
-        print("  ✅ Shortcut already exists — skipping.")
-        return
-
-    target = exe_path if exe_path else os.path.join(SCRIPT_DIR, "main.py")
+    # Always delete old shortcut/bat so we recreate fresh
+    for old in [os.path.join(desktop, f"{APP_NAME}.lnk"),
+                os.path.join(desktop, f"{APP_NAME}.bat")]:
+        if os.path.exists(old):
+            os.remove(old)
 
     try:
         import winshell
         from win32com.client import Dispatch
+
+        shortcut_path = os.path.join(desktop, f"{APP_NAME}.lnk")
+        python_exe = sys.executable  # explicit path to python.exe
         shell = Dispatch("WScript.Shell")
         shortcut = shell.CreateShortCut(shortcut_path)
-        shortcut.Targetpath = target
+        shortcut.Targetpath = python_exe
+        shortcut.Arguments = f'"{main_py}"'
         shortcut.WorkingDirectory = SCRIPT_DIR
-        shortcut.IconLocation = target
+        shortcut.IconLocation = python_exe
         shortcut.save()
         print(f"  ✅ Shortcut created at: {shortcut_path}")
+
     except ImportError:
-        # Fallback: write a .bat launcher on the desktop
+        # Fallback: .bat launcher — explicitly calls python, not the .py file
         bat_path = os.path.join(desktop, f"{APP_NAME}.bat")
         with open(bat_path, "w") as f:
-            f.write(f'@echo off\ncd /d "{SCRIPT_DIR}"\n"{target}"\npause\n')
+            f.write(
+                f'@echo off\n'
+                f'cd /d "{SCRIPT_DIR}"\n'
+                f'python "{main_py}"\n'
+                f'pause\n'
+            )
         print(f"  ✅ Launcher created at: {bat_path}")
         print("  (Install pywin32 for a proper .lnk shortcut: pip install pywin32)")
+
 
 def create_shortcut_linux():
     print("\n[4/4] Creating desktop shortcut...")
     desktop = get_desktop_path()
     shortcut_path = os.path.join(desktop, f"{APP_NAME}.desktop")
-
-    if os.path.exists(shortcut_path):
-        print("  ✅ Shortcut already exists — skipping.")
-        return
-
     main_py = os.path.join(SCRIPT_DIR, "main.py")
-    os.chmod(main_py, 0o755)  # make sure it's executable
+
+    # Always recreate so changes apply
+    if os.path.exists(shortcut_path):
+        os.remove(shortcut_path)
+
+    os.chmod(main_py, 0o755)
+
+    # Find python3 explicitly so it doesn't depend on PATH
+    python3 = shutil.which("python3") or "python3"
 
     desktop_entry = f"""[Desktop Entry]
 Version=1.0
 Type=Application
 Name=Gamify Life
 Comment=Gamify your daily life
-Exec=bash -c "cd '{SCRIPT_DIR}' && python3 '{main_py}'; read -p 'Press Enter to close...'"
+Exec=bash -c "cd '{SCRIPT_DIR}' && '{python3}' '{main_py}'; read -p 'Press Enter to close...'"
 Icon=utilities-terminal
 Terminal=true
 Categories=Utility;
