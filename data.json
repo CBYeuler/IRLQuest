@@ -1,0 +1,22 @@
+{
+    "level":1,
+    "totalXP":0,
+    "stats":{
+        "Strength":0,
+        "Discipline":0,
+        "Mind":0,
+        "Faith":0,
+        "Social":0,
+        "Skill":0
+    },
+    "tasks":[
+        {
+            "id":1,
+            "name":"Workout",
+            "xp":50,
+            "stat":"Strength",
+            "completed":false
+        }
+    ]
+}
+
