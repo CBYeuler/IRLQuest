@@ -1,0 +1,4 @@
+matplotlib
+numpy
+simple-term-menu
+pyinstaller

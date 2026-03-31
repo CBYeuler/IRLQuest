@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+ 
+# Virtual environment
+venv/
+.venv/
+env/
+ 
+# Distribution / packaging
+dist/
+build/
+*.spec
+ 
+# User data (don't commit personal progress)
+data.json
+ 
+# Chart output
+stats_chart.png
+ 
+# OS
+.DS_Store
+Thumbs.db
+ 

@@ -1,22 +1,31 @@
 {
-    "level":1,
-    "totalXP":0,
-    "stats":{
-        "Strength":0,
-        "Discipline":0,
-        "Mind":0,
-        "Faith":0,
-        "Social":0,
-        "Skill":0
+    "level": 0,
+    "totalXP": 50,
+    "stats": {
+        "Strength": 0,
+        "Discipline": 0,
+        "Mind": 50,
+        "Faith": 0,
+        "Social": 0,
+        "Skill": 100
     },
-    "tasks":[
+    "tasks": [
         {
-            "id":1,
-            "name":"Workout",
-            "xp":50,
-            "stat":"Strength",
-            "completed":false
+            "id": 1,
+            "name": "Workout",
+            "xp": 50,
+            "stat": "Strength",
+            "completed": false
+        },
+        {
+            "id": 2,
+            "name": "Code",
+            "xp": 50,
+            "stat": "Skill",
+            "completed": false
         }
-    ]
+    ],
+    "name": "CBYeuler",
+    "player_class": "Hacker",
+    "motto": "Hack Away!"
 }
-
